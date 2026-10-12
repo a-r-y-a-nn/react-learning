@@ -7,7 +7,8 @@
 //   { type: 'list', items, ordered? }        bullet or numbered list
 //   { type: 'analogy', title, items }        "think of it like..." cards
 //   { type: 'rules', items: [{title, text}]} numbered rule cards
-//   { type: 'callout', tone, text }          tone: 'tip' | 'note' | 'try'
+//   { type: 'callout', tone, text }          tone: 'tip' | 'note' | 'try' | 'idea'
+//   { type: 'table', head, rows }            comparison table; head is a row of strings, rows an array of them
 //   { type: 'practice', file }               live preview of a practice file
 
 import stateDemoCode from '../practice/lesson3/StateDemo.jsx?raw'
@@ -643,6 +644,62 @@ const [count, setCount] = useState(0)`,
               '**Change a starting value.** Make `LightSwitch` start with the light on.',
               '**Make your own state.** Add a `MoodSwitcher` with `useState("😊")` and three buttons that set it to 😊, 😢 and 😡.',
             ],
+          },
+        ],
+      },
+      {
+        id: 'remember',
+        title: 'Points to remember: why the broken counter stays at 0',
+        blocks: [
+          { type: 'heading', text: "Reason 1: React doesn't know the number changed" },
+          { type: 'p', text: 'When you click, this runs:' },
+          { type: 'code', lang: 'jsx', code: 'count = count + 1;' },
+          {
+            type: 'p',
+            text: "The variable really does go up. You can see 1, 2, 3... in the Console (F12). But changing a normal variable doesn't tell React anything, so React never redraws the screen and keeps showing the old number.",
+          },
+          {
+            type: 'callout',
+            tone: 'idea',
+            text: "Think of the screen as a **photo** React took of your component. Changing `count` is like changing things in the room after the photo was taken. The photo doesn't update unless someone takes a new one.",
+          },
+
+          { type: 'heading', text: 'Reason 2: Even if React redrew the screen, count would start at 0 again' },
+          {
+            type: 'p',
+            text: 'Every time React draws a component, it runs the **whole function again from the top**:',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `function BrokenCounter() {
+  let count = 0;   // ← runs again on every redraw, so count is 0 again
+  ...
+}`,
+          },
+          {
+            type: 'p',
+            text: "So even if something else made React redraw, `let count = 0` would run again and your clicks would be lost. A normal variable can't remember anything between redraws.",
+          },
+
+          { type: 'heading', text: 'How useState fixes both problems' },
+          { type: 'code', lang: 'jsx', code: 'const [count, setCount] = useState(0);' },
+          {
+            type: 'table',
+            head: ['', 'Normal variable (`let count`)', 'State (`useState`)'],
+            rows: [
+              ['Remembers its value between redraws?', '❌ No, goes back to 0', '✅ Yes, React stores it'],
+              ['Tells React to redraw the screen?', '❌ No', '✅ Yes, `setCount` does'],
+            ],
+          },
+          {
+            type: 'p',
+            text: 'So `setCount(count + 1)` saves the new number **and** tells React to redraw, and the screen updates.',
+          },
+          {
+            type: 'callout',
+            tone: 'note',
+            text: 'In short: use `useState` for any value that changes and needs to show on screen. A normal `let` variable won\'t work for that.',
           },
         ],
       },

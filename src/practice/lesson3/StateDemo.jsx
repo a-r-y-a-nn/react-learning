@@ -8,6 +8,7 @@ import { useState } from 'react'
 // EXAMPLE 1: why a normal variable doesn't work
 // The number changes in memory (watch the console with F12),
 // but nobody rings React's bell, so the screen stays at 0.
+
 function BrokenCounter() {
   let count = 0
 
@@ -53,9 +54,9 @@ function PlusThree() {
   }
 
   function addThreeRight() {
-    setCount((c) => c + 1)
-    setCount((c) => c + 1)
-    setCount((c) => c + 1)
+    setCount((c) => c + 1) //// 0 → 1
+    setCount((c) => c + 1) // 1 → 2
+    setCount((c) => c + 1) // 2 → 3
   }
 
   return (

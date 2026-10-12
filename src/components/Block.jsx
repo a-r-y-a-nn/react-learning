@@ -2,7 +2,7 @@ import InlineText from './InlineText'
 import CodeBlock from './CodeBlock'
 import PracticePreview from './PracticePreview'
 
-const calloutLabels = { tip: 'Tip', note: 'Remember', try: 'Your turn' }
+const calloutLabels = { tip: 'Tip', note: 'Remember', try: 'Your turn', idea: 'Think of it like this' }
 
 function Block({ block }) {
   switch (block.type) {
@@ -58,6 +58,34 @@ function Block({ block }) {
             </li>
           ))}
         </ol>
+      )
+
+    case 'table':
+      return (
+        <div className="table-wrap">
+          <table className="compare">
+            <thead>
+              <tr>
+                {block.head.map((cell) => (
+                  <th key={cell}>
+                    <InlineText text={cell} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row) => (
+                <tr key={row[0]}>
+                  {row.map((cell, i) => (
+                    <td key={i}>
+                      <InlineText text={cell} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )
 
     case 'callout':
