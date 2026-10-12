@@ -12,6 +12,7 @@
 //   { type: 'practice', file }               live preview of a practice file
 
 import stateDemoCode from '../practice/lesson3/StateDemo.jsx?raw'
+import listDemoCode from '../practice/lesson4/ListDemo.jsx?raw'
 
 export const lessons = [
   {
@@ -734,6 +735,185 @@ const [count, setCount] = useState(0)`,
     number: 4,
     title: 'Conditional rendering and lists',
     summary: 'Show different things depending on state, and build lists properly with keys.',
+    duration: '45 min',
+    sections: [
+      {
+        id: 'conditional',
+        title: 'Part 1: Conditional rendering',
+        blocks: [
+          {
+            type: 'p',
+            text: "Sometimes a component should draw different things depending on the situation. It's like a **traffic light**. It's the same light, but it shows red or green depending on what's happening. React gives you three ways to choose.",
+          },
+          { type: 'heading', text: 'if / else, before the return' },
+          { type: 'p', text: 'Use this when the whole picture changes.' },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `if (isLoggedIn) {
+  return <p>Welcome back!</p>
+}
+return <p>Please log in.</p>`,
+          },
+          { type: 'heading', text: 'The ternary, condition ? A : B' },
+          {
+            type: 'p',
+            text: 'This is a tiny if/else that fits inside JSX. Read the question mark as **"if yes"** and the colon as **"otherwise"**.',
+          },
+          { type: 'code', lang: 'jsx', code: '<p>Toy car is {inStock ? "in stock" : "sold out"}</p>' },
+          { type: 'heading', text: '&& means "show this only if true"' },
+          { type: 'p', text: 'If the condition is false, nothing appears.' },
+          { type: 'code', lang: 'jsx', code: '{count > 0 && <strong>You have {count} new messages</strong>}' },
+          {
+            type: 'callout',
+            tone: 'note',
+            text: '**The && trap.** If you write `{count && ...}` and `count` is 0, React prints a "0" on the screen. Always turn it into a clear true or false first, like `count > 0`.',
+          },
+        ],
+      },
+      {
+        id: 'lists',
+        title: 'Part 2: Lists with .map()',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Real apps show lists, like products, messages or todos. You keep the data in an array and use `.map()` to turn each item into JSX.',
+          },
+          {
+            type: 'callout',
+            tone: 'idea',
+            text: 'Think of a **cookie cutter**. The array is the dough, `.map()` is pressing the cutter, and each cookie is a list item.',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `{fruits.map((fruit) => (
+  <li key={fruit.id}>{fruit.emoji} {fruit.name}</li>
+))}`,
+          },
+          { type: 'heading', text: '.filter() picks only some items' },
+          { type: 'p', text: 'It keeps items that pass a test. You often filter first, then map.' },
+          { type: 'code', lang: 'jsx', code: 'fruits.filter((f) => f.price < 40)' },
+        ],
+      },
+      {
+        id: 'keys',
+        title: 'Part 3: Keys',
+        blocks: [
+          {
+            type: 'callout',
+            tone: 'idea',
+            text: 'Imagine a teacher with a class of kids who keep changing seats. If the teacher only remembers "the kid in seat 2", they\'ll mix everyone up when the kids move. If each kid wears a **name tag**, the teacher always knows who\'s who.',
+          },
+          {
+            type: 'p',
+            text: 'A key is that name tag. React uses it to know which list item is which when items are added, removed or reordered.',
+          },
+          {
+            type: 'rules',
+            items: [
+              { title: 'Use a stable unique id', text: 'Take it from your data, like `fruit.id`.' },
+              {
+                title: 'Avoid the index when the list can change',
+                text: 'Using the array index as a key causes bugs when items are added, removed or reordered. Example 7 in the demo shows the bug.',
+              },
+              {
+                title: 'Put the key on the outermost element',
+                text: 'The key goes on the outermost element inside the map.',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'arrays',
+        title: 'Part 4: Changing arrays in state',
+        blocks: [
+          {
+            type: 'p',
+            text: 'React only redraws when it sees a **new** array. If you use `.push()`, you change the old array, and React may not notice. Always build a new one.',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `// Add one item: copy everything, then add the new one
+setTodos([...todos, newTodo])
+
+// Remove one item: keep everything except that id
+setTodos(todos.filter((t) => t.id !== id))`,
+          },
+          {
+            type: 'callout',
+            tone: 'tip',
+            text: 'The three dots are called **spread**. They mean "copy everything from this array here".',
+          },
+        ],
+      },
+      {
+        id: 'demo',
+        title: 'Explore the demo',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Run `npm run dev`, then open `src/practice/lesson4/ListDemo.jsx` next to the browser.',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            caption: 'src/practice/lesson4/ListDemo.jsx',
+            code: listDemoCode,
+          },
+          { type: 'practice', file: 'src/practice/lesson4/ListDemo.jsx' },
+          { type: 'p', text: 'Try these one at a time:' },
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              'Click **Log in** and **Log out** to watch Example 1 switch pictures.',
+              '**See the && trap.** In `Notifications`, change `count > 0 &&` to `count &&`, then click "Read all". A stray "0" appears. Change it back.',
+              'Add a fruit to the `fruits` array with a new id. It appears in Examples 4 and 5 automatically.',
+              'Tick the checkbox in Example 5, then change `PRICE_LIMIT` from 40 to 50.',
+              'Add and delete todos in Example 6. Then read how `TodoItem` tells its parent to delete, using the walkie-talkie idea from Lesson 3.',
+              '**See the key bug.** In Example 7, type a note in every box on both sides, then click "Add to top". On the left, your notes end up next to the wrong animals.',
+              '**Break a key on purpose.** Remove `key={fruit.id}` in `FruitList` and look at the browser console. React warns you that each child needs a key.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'try',
+        title: 'Try it',
+        blocks: [
+          {
+            type: 'callout',
+            tone: 'try',
+            text: 'Your playground for Lesson 4 is `src/practice/lesson4/App.jsx`. Build the mini project below there, and the live preview updates by itself.',
+          },
+          { type: 'practice', file: 'src/practice/lesson4/App.jsx' },
+        ],
+      },
+    ],
+    project: {
+      title: 'Mini project 4: Shopping list',
+      intro: 'Build this yourself inside `src/practice/lesson4/`. Put your components in a `components` folder there.',
+      tasks: [
+        'Start with an array of items in state. Each item has an `id`, a `name`, a `quantity`, and `bought` set to `true` or `false`.',
+        'Show the list with `.map()` using a `ShoppingItem` child component and proper keys.',
+        'Add a "Bought" toggle button on each item. Bought items show with a line through them, using `style={{ textDecoration: item.bought ? "line-through" : "none" }}`. Hint: use `.map()` to build a new array where only the clicked item\'s `bought` flips.',
+        'Add a delete button on each item that uses `.filter()`.',
+        'Add an "Add item" button that adds a new item using spread.',
+        'Show "Your list is empty 🛒" when there are no items, using a ternary.',
+        'Show a counter like "3 of 5 bought" at the top. Hint: `items.filter(i => i.bought).length`.',
+        'Bonus: add a checkbox "Hide bought items" that filters them out of view.',
+      ],
+      outro: "When you're done, share your code for a review. Lesson 5 comes next, where you'll handle real typing in **forms**, so your shopping list can add items with any name you choose.",
+    },
+  },
+  {
+    id: 'lesson-5',
+    number: 5,
+    title: 'Forms: handling what people type',
+    summary: 'Read real typing from inputs so users can add anything they like.',
     duration: 'Coming soon',
     locked: true,
     sections: [],

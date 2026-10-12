@@ -4,6 +4,8 @@ import Lesson2App from './lesson2/App.jsx'
 import Lesson2PropsDemo from './lesson2/PropsDemo.jsx'
 import Lesson3App from './lesson3/App.jsx'
 import Lesson3StateDemo from './lesson3/StateDemo.jsx'
+import Lesson4App from './lesson4/App.jsx'
+import Lesson4ListDemo from './lesson4/ListDemo.jsx'
 
 export const practiceApps = {
   'src/practice/lesson1/App.jsx': Lesson1App,
@@ -11,4 +13,6 @@ export const practiceApps = {
   'src/practice/lesson2/PropsDemo.jsx': Lesson2PropsDemo,
   'src/practice/lesson3/App.jsx': Lesson3App,
   'src/practice/lesson3/StateDemo.jsx': Lesson3StateDemo,
+  'src/practice/lesson4/App.jsx': Lesson4App,
+  'src/practice/lesson4/ListDemo.jsx': Lesson4ListDemo,
 }
