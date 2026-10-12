@@ -10,6 +10,8 @@
 //   { type: 'callout', tone, text }          tone: 'tip' | 'note' | 'try'
 //   { type: 'practice', file }               live preview of a practice file
 
+import stateDemoCode from '../practice/lesson3/StateDemo.jsx?raw'
+
 export const lessons = [
   {
     id: 'lesson-1',
@@ -524,8 +526,157 @@ export default PropsDemo`,
   {
     id: 'lesson-3',
     number: 3,
-    title: 'State: giving components a memory',
+    title: 'State and events: giving components a memory',
     summary: 'Make components remember things and respond to clicks.',
+    duration: '40 min',
+    sections: [
+      {
+        id: 'problem',
+        title: 'The problem',
+        blocks: [
+          {
+            type: 'p',
+            text: 'So far your components are like **printed posters**. They show something, but nothing changes when you click. Real apps need to remember things, like how many likes a post has, or whether a menu is open.',
+          },
+        ],
+      },
+      {
+        id: 'state',
+        title: "State is a component's memory",
+        blocks: [
+          {
+            type: 'p',
+            text: 'Imagine each component carries a small **notebook**. It writes things it needs to remember in that notebook. When something in the notebook changes, React redraws that component on screen.',
+          },
+          { type: 'heading', text: "Why a normal variable doesn't work" },
+          {
+            type: 'p',
+            text: "React only redraws when you **ring a bell**. If you change a normal variable with `count = count + 1`, the number changes in the computer's memory, but nobody rings the bell. The screen stays the same. Example 1 in the demo shows exactly this.",
+          },
+          { type: 'heading', text: 'useState gives you the notebook and the bell' },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `import { useState } from 'react'
+
+const [count, setCount] = useState(0)`,
+          },
+          {
+            type: 'list',
+            items: [
+              "`count` is what's written in the notebook right now.",
+              '`setCount` is the bell. Calling it writes a new value and tells React to redraw.',
+              '`0` is the starting value, used only the very first time.',
+            ],
+          },
+          {
+            type: 'callout',
+            tone: 'note',
+            text: 'Never change `count` directly. Always use `setCount`.',
+          },
+        ],
+      },
+      {
+        id: 'events',
+        title: 'Events let you react to the user',
+        blocks: [
+          {
+            type: 'p',
+            text: 'You attach a function to a tag with `onClick`, `onChange`, and similar names. Watch out for the most common beginner mistake:',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            code: `<button onClick={handleClick}>    // ✅ "call this WHEN clicked"
+<button onClick={handleClick()}>  // ❌ "call this RIGHT NOW while drawing"
+<button onClick={() => setCount(count + 1)}>  // ✅ small arrow function`,
+          },
+        ],
+      },
+      {
+        id: 'rules',
+        title: 'Three more ideas',
+        blocks: [
+          {
+            type: 'rules',
+            items: [
+              {
+                title: 'The updater function',
+                text: 'When the new value depends on the old one, pass a function instead of a value. Write `setCount(c => c + 1)` instead of `setCount(count + 1)`. React gives you the freshest value each time. Example 3 shows why this matters.',
+              },
+              {
+                title: 'Each copy has its own memory',
+                text: "The demo draws two `Counter`s. Click one and the other doesn't move. Each brick gets its own notebook.",
+              },
+              {
+                title: 'How children talk back',
+                text: "In Lesson 2 you learned props only flow downward. The trick is that a parent can pass a **function** as a prop. The child calls that function, and the parent's state changes. Think of it as the parent giving the child a walkie-talkie. Example 5 shows this.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'demo',
+        title: 'Explore the demo',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Run `npm run dev` if it isn\'t running, then open `src/practice/lesson3/StateDemo.jsx` next to the browser.',
+          },
+          {
+            type: 'code',
+            lang: 'jsx',
+            caption: 'src/practice/lesson3/StateDemo.jsx',
+            code: stateDemoCode,
+          },
+          { type: 'practice', file: 'src/practice/lesson3/StateDemo.jsx' },
+          { type: 'p', text: 'Try these one at a time:' },
+          {
+            type: 'list',
+            ordered: true,
+            items: [
+              '**See the broken counter.** Press F12 to open the console, then click Example 1. The console count goes up, but the page stays at 0.',
+              '**Compare the +3 buttons.** "+3 wrong" adds 1. "+3 right" adds 3. Read both functions to see why.',
+              '**Add a button.** In `Counter`, add a "+10" button.',
+              '**Make a rule.** Stop `Counter` from going below 0. Hint: use `Math.max(0, count - 1)`.',
+              '**Change a starting value.** Make `LightSwitch` start with the light on.',
+              '**Make your own state.** Add a `MoodSwitcher` with `useState("😊")` and three buttons that set it to 😊, 😢 and 😡.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'try',
+        title: 'Try it',
+        blocks: [
+          {
+            type: 'callout',
+            tone: 'try',
+            text: 'Your playground for Lesson 3 is `src/practice/lesson3/App.jsx`. Build the mini project below there, and the live preview updates by itself.',
+          },
+          { type: 'practice', file: 'src/practice/lesson3/App.jsx' },
+        ],
+      },
+    ],
+    project: {
+      title: 'Mini project 3: Counter and mood switcher',
+      intro: 'Build this yourself inside `src/practice/lesson3/`. Put your components in a `components` folder there.',
+      tasks: [
+        'A `Counter` component with +1, -1 and Reset buttons. It takes a `step` prop, so `<Counter step={5} />` adds 5 at a time. It never goes below 0.',
+        'A `MoodSwitcher` component that shows a big emoji and a sentence like "I\'m feeling happy". Clicking buttons changes the mood.',
+        'A `ThemeToggle` component with a button that switches the background between light and dark. Hint: use a boolean state and `style={{ background: isDark ? "#222" : "#fff" }}`.',
+        'A parent-child walkie-talkie. Make a `ClickTracker` parent that holds a total click count. Render two `ClickButton` children that each receive an `onClick` prop. Clicking either button raises the shared total.',
+        'Bonus: finish mini project 2 now. Give `MemberCard` a "❤️ Like" button with its own like count. Each card will remember its own likes.',
+      ],
+      outro: "When you've built it, share your code for a review. Lesson 4 comes next, where you show different things depending on state and turn arrays into lists properly with keys.",
+    },
+  },
+  {
+    id: 'lesson-4',
+    number: 4,
+    title: 'Conditional rendering and lists',
+    summary: 'Show different things depending on state, and build lists properly with keys.',
     duration: 'Coming soon',
     locked: true,
     sections: [],
