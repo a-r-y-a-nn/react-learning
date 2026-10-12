@@ -48,9 +48,9 @@ function PlusThree() {
   const [count, setCount] = useState(0)
 
   function addThreeWrong() {
-    setCount(count + 1)
-    setCount(count + 1)
-    setCount(count + 1)
+    setCount(count + 1) // set to 1
+    setCount(count + 1) // set to 1 again
+    setCount(count + 1) // set to 1 again
   }
 
   function addThreeRight() {
