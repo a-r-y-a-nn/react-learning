@@ -16,6 +16,14 @@
   --warn-soft: rgba(224, 150, 20, 0.14);
   --warn: #b07207;
   --danger: #c43d3d;
+  --danger-soft: rgba(196, 61, 61, 0.14);
+
+  /* Memory strength: one hue, faint to full, mixed with the surface so it works in both themes. */
+  --lvl-new: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  --lvl-learning: color-mix(in srgb, var(--accent) 48%, var(--surface));
+  --lvl-strong: color-mix(in srgb, var(--accent) 74%, var(--surface));
+  --lvl-mastered: var(--accent);
+  --lvl-locked: var(--border);
 
   --sans: 'Segoe UI', system-ui, Roboto, sans-serif;
   --mono: 'Cascadia Code', ui-monospace, Consolas, monospace;

@@ -17,7 +17,7 @@ const theme = {
   ],
 }
 
-function CodeBlock({ code, lang, caption }) {
+function CodeBlock({ code, lang, caption, bare = false }) {
   const [copied, setCopied] = useState(false)
 
   async function copy() {
@@ -32,12 +32,14 @@ function CodeBlock({ code, lang, caption }) {
 
   return (
     <figure className="code-block">
-      <div className="code-block__bar">
-        <span>{caption ?? lang}</span>
-        <button type="button" onClick={copy}>
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
+      {!bare && (
+        <div className="code-block__bar">
+          <span>{caption ?? lang}</span>
+          <button type="button" onClick={copy}>
+            {copied ? 'Copied' : 'Copy'}
+          </button>
+        </div>
+      )}
       <Highlight code={code} language={lang ?? 'jsx'} theme={theme}>
         {({ tokens, getLineProps, getTokenProps }) => (
           <pre>

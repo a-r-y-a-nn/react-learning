@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-// Tiny router: "#/lesson-1/jsx" -> { lessonId: 'lesson-1', sectionId: 'jsx' }
+// Tiny router: "#/lesson-1/jsx/2" -> { lessonId: 'lesson-1', sectionId: 'jsx', step: 2 }
 function parse() {
-  const [lessonId = null, sectionId = null] = window.location.hash
+  const [lessonId = null, sectionId = null, step = '0'] = window.location.hash
     .replace(/^#\/?/, '')
     .split('/')
     .filter(Boolean)
-  return { lessonId, sectionId }
+  return { lessonId, sectionId, step: Math.max(0, Number.parseInt(step, 10) || 0) }
 }
 
 export function useHashRoute() {

@@ -10,6 +10,15 @@
 //   { type: 'callout', tone, text }          tone: 'tip' | 'note' | 'try' | 'idea'
 //   { type: 'table', head, rows }            comparison table; head is a row of strings, rows an array of them
 //   { type: 'practice', file }               live preview of a practice file
+//
+// Each section is shown one step at a time. A new step starts at every 'heading' block.
+//
+// Section fields besides id, title and blocks:
+//   icon    an emoji for the topic card
+//   hook    one short line that says what the topic is about
+//   cards   flashcards for the quick check and Daily review: [{ q, a, qCode?, aCode? }]
+//           q and a support `code` and **bold**. qCode and aCode add a code block.
+//           Cards are tracked by position, so add new cards at the end of the list.
 
 import stateDemoCode from '../practice/lesson3/StateDemo.jsx?raw'
 import listDemoCode from '../practice/lesson4/ListDemo.jsx?raw'
@@ -25,6 +34,8 @@ export const lessons = [
       {
         id: 'start',
         title: 'Start your app',
+        icon: '🚀',
+        hook: 'One command starts your app and keeps the page live.',
         blocks: [
           { type: 'p', text: 'Open a terminal in your project folder and run:' },
           { type: 'code', lang: 'bash', code: 'npm run dev' },
@@ -33,10 +44,22 @@ export const lessons = [
             text: 'Open the link it prints, usually `http://localhost:5173`. Leave it running. Every time you save a file, the page updates by itself.',
           },
         ],
+        cards: [
+          {
+            q: 'Which command starts your React app while you work?',
+            a: '`npm run dev`. It prints a link, usually `http://localhost:5173`.',
+          },
+          {
+            q: 'While `npm run dev` is running, do you need to refresh the page after saving a file?',
+            a: 'No. The page updates by itself every time you save.',
+          },
+        ],
       },
       {
         id: 'screen',
         title: 'How your app gets on the screen',
+        icon: '🖼️',
+        hook: 'Three files work together, like hanging a picture.',
         blocks: [
           { type: 'p', text: 'Think of it like hanging a picture.' },
           {
@@ -68,10 +91,26 @@ export const lessons = [
             text: 'You almost never touch the frame. You spend your time drawing pictures in components.',
           },
         ],
+        cards: [
+          {
+            q: 'In the picture analogy, what is `index.html`?',
+            a: '**The frame.** It holds one empty box: a div with the id "root".',
+          },
+          {
+            q: 'What does `main.jsx` do?',
+            a: "It's **the person hanging the picture**. It finds the empty root box and puts your `App` inside it.",
+          },
+          {
+            q: 'Which file is "the picture", where you draw what people see?',
+            a: '`App.jsx` and the components inside it. You almost never touch the frame.',
+          },
+        ],
       },
       {
         id: 'component',
         title: 'What is a component?',
+        icon: '🧱',
+        hook: 'Small bricks that snap together into a whole app.',
         blocks: [
           {
             type: 'p',
@@ -82,10 +121,22 @@ export const lessons = [
             text: 'In code, a component is just a function that returns what should appear on screen. Its name must start with a **capital letter**, so React knows it is a brick and not a normal HTML tag.',
           },
         ],
+        cards: [
+          {
+            q: 'What is a component, in code?',
+            a: 'A **function that returns what should appear on screen**. Like a LEGO brick, it is small and does one job.',
+          },
+          {
+            q: "Why must a component's name start with a capital letter?",
+            a: 'So React knows it is **your brick** and not a normal HTML tag like `div`.',
+          },
+        ],
       },
       {
         id: 'jsx',
         title: 'What is JSX?',
+        icon: '🎭',
+        hook: 'HTML in a JavaScript costume, with three rules.',
         blocks: [
           {
             type: 'p',
@@ -109,10 +160,26 @@ export const lessons = [
             ],
           },
         ],
+        cards: [
+          {
+            q: 'Can a component return two elements side by side?',
+            a: 'No. Return **one parent**. Wrap them in a `div`, or in an empty wrapper written as `<>` and `</>`.',
+          },
+          {
+            q: 'Why do you write `className` instead of `class` in JSX?',
+            a: 'The word `class` is already taken in JavaScript.',
+          },
+          {
+            q: 'What happens to whatever you put inside `{ }` in JSX?',
+            a: 'It gets **calculated as JavaScript**. `{2 + 2}` shows 4, and `{name}` shows the value of `name`.',
+          },
+        ],
       },
       {
         id: 'try',
         title: 'Try it',
+        icon: '🛠️',
+        hook: 'Paste, save, and watch your bricks show up.',
         blocks: [
           {
             type: 'callout',
@@ -147,6 +214,7 @@ function App() {
 
 export default App`,
           },
+          { type: 'heading', text: 'Watch it work' },
           { type: 'p', text: 'Save it and look at the preview. Notice three things:' },
           {
             type: 'list',
@@ -158,10 +226,18 @@ export default App`,
           },
           { type: 'practice', file: 'src/practice/lesson1/App.jsx' },
         ],
+        cards: [
+          {
+            q: 'You write `<Greeting />` twice inside `App`. What appears on the page?',
+            a: 'The greeting appears **twice**. Write a brick once and reuse it as often as you like.',
+          },
+        ],
       },
       {
         id: 'js-map',
         title: 'Important JavaScript: map',
+        icon: '🔁',
+        hook: 'Turn an array of data into a list on screen.',
         blocks: [
           { type: 'heading', text: 'A plain JavaScript example first' },
           { type: 'p', text: 'Leave React aside for a moment:' },
@@ -205,6 +281,7 @@ const doubled = numbers.map((n) => n * 2)
               'Outer `{ }`: switches from JSX into JavaScript, as you learned today.',
             ],
           },
+          { type: 'heading', text: 'Strings in, JSX out' },
           { type: 'p', text: 'So `map` turns this array of **strings**:' },
           { type: 'code', lang: 'js', code: '["Reading", "Swimming", "Playing Guitar"]' },
           { type: 'p', text: 'into this array of **JSX elements**:' },
@@ -260,6 +337,27 @@ const doubled = numbers.map((n) => n * 2)
             text: 'This `map` counts as your use of curly braces in `Hobbies`, so that mini project requirement is already done.',
           },
         ],
+        cards: [
+          {
+            q: 'What does `[1, 2, 3].map((n) => n * 2)` give you?',
+            a: '`[2, 4, 6]`. The original array is not changed.',
+          },
+          {
+            q: 'Inside JSX, what does `.map()` turn your array of data into?',
+            a: 'An array of **JSX elements**. React knows how to draw an array of elements, so they all show up.',
+          },
+          {
+            q: 'Nothing appears and React shows no error. What is wrong?',
+            qCode: `hobbies.map((hobby) => {
+  <li>{hobby}</li>
+})`,
+            a: 'With `{ }` after the arrow, you must write `return` yourself. Use `( )` instead to return automatically.',
+          },
+          {
+            q: 'Why does each list item need a `key`?',
+            a: 'It is a unique label, so React can tell the items apart when the list changes. Without one, React prints a warning in the console.',
+          },
+        ],
       },
     ],
     project: {
@@ -289,16 +387,26 @@ const doubled = numbers.map((n) => n * 2)
       {
         id: 'problem',
         title: 'The problem props solve',
+        icon: '🤔',
+        hook: 'Why a hard-coded name makes a brick hard to reuse.',
         blocks: [
           {
             type: 'p',
             text: 'Look at your `Bio`. It always says "Aryan Sharma". If you want a second card for a friend, you would have to copy the whole file and change the name. That defeats the point of reusable bricks.',
           },
         ],
+        cards: [
+          {
+            q: 'What problem do props solve?',
+            a: 'Without props, a component always shows the same thing. Props let **one component show different data** each time you use it.',
+          },
+        ],
       },
       {
         id: 'what',
         title: 'What props are',
+        icon: '🎁',
+        hook: 'Notes a parent hands down to its child.',
         blocks: [
           {
             type: 'p',
@@ -311,6 +419,7 @@ const doubled = numbers.map((n) => n * 2)
             tone: 'note',
             text: 'Strings go in quotes. Anything else, like numbers, arrays, or `true` and `false`, goes in curly braces.',
           },
+          { type: 'heading', text: 'Reading props in the child' },
           { type: 'p', text: 'The child receives them all packed in one box called `props`:' },
           {
             type: 'code',
@@ -319,6 +428,7 @@ const doubled = numbers.map((n) => n * 2)
   return <h2>{props.name}</h2>
 }`,
           },
+          { type: 'heading', text: 'Unpack the box' },
           {
             type: 'p',
             text: 'Most people unpack the box right in the brackets. This is called **destructuring**, and it reads more cleanly:',
@@ -343,10 +453,28 @@ const doubled = numbers.map((n) => n * 2)
 <Bio name="Riya Verma" birthYear={2005} />`,
           },
         ],
+        cards: [
+          {
+            q: 'What are props?',
+            a: 'Information a **parent** component passes down to a **child**. You write them like HTML attributes.',
+            aCode: '<Bio name="Aryan Sharma" birthYear={2003} />',
+          },
+          {
+            q: 'When does a prop value go in quotes, and when in curly braces?',
+            a: '**Strings** go in quotes. Everything else, like numbers, arrays and `true` or `false`, goes in `{ }`.',
+          },
+          {
+            q: 'What does destructuring do here?',
+            qCode: 'function Bio({ name, birthYear }) { ... }',
+            a: 'It unpacks the props box right in the brackets, so you can write `name` instead of `props.name`.',
+          },
+        ],
       },
       {
         id: 'rules',
         title: 'Four rules to remember',
+        icon: '📜',
+        hook: 'Four rules every prop follows.',
         blocks: [
           {
             type: 'rules',
@@ -382,10 +510,31 @@ const doubled = numbers.map((n) => n * 2)
 </Card>`,
           },
         ],
+        cards: [
+          {
+            q: 'Which way do props flow?',
+            a: '**Downward only**, from parent to child. A child cannot send props back up.',
+          },
+          {
+            q: 'Can a child change a prop it received?',
+            a: 'No. Props are **read-only**, like a gift with a "do not edit" sticker.',
+          },
+          {
+            q: 'How do you give the `name` prop a default value?',
+            a: 'Set it right in the brackets.',
+            aCode: 'function Bio({ name = "Anonymous" }) { ... }',
+          },
+          {
+            q: 'What arrives in the special `children` prop?',
+            a: 'Whatever you put **between** the opening and closing tags, like everything between `<Card>` and `</Card>`.',
+          },
+        ],
       },
       {
         id: 'demo',
         title: 'All the ideas in one file',
+        icon: '🧪',
+        hook: 'Every props idea in one runnable file.',
         blocks: [
           {
             type: 'p',
@@ -402,6 +551,7 @@ const doubled = numbers.map((n) => n * 2)
               '**Non-string props.** `SkillList` gets an array and a `true`/`false` value, both passed in curly braces.',
             ],
           },
+          { type: 'heading', text: 'Read the code' },
           {
             type: 'p',
             text: 'The parent, `PropsDemo`, is where props are **given**. Notice that strings use quotes and everything else uses `{ }`.',
@@ -489,6 +639,7 @@ function PropsDemo() {
 
 export default PropsDemo`,
           },
+          { type: 'heading', text: 'Play with it' },
           {
             type: 'callout',
             tone: 'try',
@@ -496,10 +647,19 @@ export default PropsDemo`,
           },
           { type: 'practice', file: 'src/practice/lesson2/PropsDemo.jsx' },
         ],
+        cards: [
+          {
+            q: 'This passes no role. What does `RoleTag` show?',
+            qCode: '<RoleTag name="Riya" />',
+            a: '"Riya is a Team Member." The default value `role = "Team Member"` kicks in.',
+          },
+        ],
       },
       {
         id: 'try',
         title: 'Try it',
+        icon: '🛠️',
+        hook: 'Build team member cards in your playground.',
         blocks: [
           {
             type: 'callout',
@@ -535,16 +695,26 @@ export default PropsDemo`,
       {
         id: 'problem',
         title: 'The problem',
+        icon: '📌',
+        hook: 'Printed posters never change. Real apps must.',
         blocks: [
           {
             type: 'p',
             text: 'So far your components are like **printed posters**. They show something, but nothing changes when you click. Real apps need to remember things, like how many likes a post has, or whether a menu is open.',
           },
         ],
+        cards: [
+          {
+            q: 'Why do real apps need state?',
+            a: 'To **remember** things that change, like how many likes a post has or whether a menu is open.',
+          },
+        ],
       },
       {
         id: 'state',
         title: "State is a component's memory",
+        icon: '📒',
+        hook: 'A notebook and a bell for every component.',
         blocks: [
           {
             type: 'p',
@@ -577,10 +747,27 @@ const [count, setCount] = useState(0)`,
             text: 'Never change `count` directly. Always use `setCount`.',
           },
         ],
+        cards: [
+          {
+            q: 'What do you get from this line?',
+            qCode: 'const [count, setCount] = useState(0)',
+            a: '`count` is what is in the notebook right now. `setCount` is the bell: it writes a new value and tells React to redraw. `0` is the starting value.',
+          },
+          {
+            q: 'Why does `count = count + 1` on a normal variable not update the screen?',
+            a: 'Nobody rings the bell. The value changes in memory, but React does not know it should redraw.',
+          },
+          {
+            q: 'How should you always change a state value like `count`?',
+            a: 'With its setter, `setCount`. Never assign to `count` directly.',
+          },
+        ],
       },
       {
         id: 'events',
         title: 'Events let you react to the user',
+        icon: '👆',
+        hook: 'Run code when someone clicks or types.',
         blocks: [
           {
             type: 'p',
@@ -594,10 +781,24 @@ const [count, setCount] = useState(0)`,
 <button onClick={() => setCount(count + 1)}>  // ✅ small arrow function`,
           },
         ],
+        cards: [
+          {
+            q: 'What is wrong with this button?',
+            qCode: '<button onClick={handleClick()}>',
+            a: 'The `()` calls the function **right now, while drawing**. Write `onClick={handleClick}` so it runs **when clicked**.',
+          },
+          {
+            q: 'How do you run `setCount(count + 1)` when a button is clicked?',
+            a: 'Wrap it in a small arrow function.',
+            aCode: '<button onClick={() => setCount(count + 1)}>',
+          },
+        ],
       },
       {
         id: 'rules',
         title: 'Three more ideas',
+        icon: '💡',
+        hook: 'Updater functions, separate memories, and walkie-talkies.',
         blocks: [
           {
             type: 'rules',
@@ -617,10 +818,26 @@ const [count, setCount] = useState(0)`,
             ],
           },
         ],
+        cards: [
+          {
+            q: 'When should you write `setCount((c) => c + 1)` instead of `setCount(count + 1)`?',
+            a: 'When the new value **depends on the old one**. React hands you the freshest value each time.',
+          },
+          {
+            q: 'Two `Counter`s are on the page. You click one. Does the other change?',
+            a: 'No. Each copy of a component has **its own memory**.',
+          },
+          {
+            q: "How can a child change its parent's state?",
+            a: 'The parent passes a **function** as a prop. The child calls it, like talking on a walkie-talkie.',
+          },
+        ],
       },
       {
         id: 'demo',
         title: 'Explore the demo',
+        icon: '🧪',
+        hook: 'Click, break and fix a real state demo.',
         blocks: [
           {
             type: 'p',
@@ -632,6 +849,7 @@ const [count, setCount] = useState(0)`,
             caption: 'src/practice/lesson3/StateDemo.jsx',
             code: stateDemoCode,
           },
+          { type: 'heading', text: 'Play with it' },
           { type: 'practice', file: 'src/practice/lesson3/StateDemo.jsx' },
           { type: 'p', text: 'Try these one at a time:' },
           {
@@ -647,10 +865,21 @@ const [count, setCount] = useState(0)`,
             ],
           },
         ],
+        cards: [
+          {
+            q: 'Why does this add only 1 instead of 3?',
+            qCode: `setCount(count + 1)
+setCount(count + 1)
+setCount(count + 1)`,
+            a: '`count` keeps the same value during one click, so all three calls write the same number. `setCount((c) => c + 1)` uses the freshest value and adds 3.',
+          },
+        ],
       },
       {
         id: 'remember',
         title: 'Points to remember: why the broken counter stays at 0',
+        icon: '🔍',
+        hook: 'Two reasons the broken counter stays at 0.',
         blocks: [
           { type: 'heading', text: "Reason 1: React doesn't know the number changed" },
           { type: 'p', text: 'When you click, this runs:' },
@@ -703,10 +932,22 @@ const [count, setCount] = useState(0)`,
             text: 'In short: use `useState` for any value that changes and needs to show on screen. A normal `let` variable won\'t work for that.',
           },
         ],
+        cards: [
+          {
+            q: 'Give the two reasons a normal `let` variable cannot work as a counter.',
+            a: 'One: changing it does not tell React to redraw. Two: every redraw runs the whole function from the top, so `let count = 0` resets it.',
+          },
+          {
+            q: 'What does `useState` do that a normal variable cannot?',
+            a: 'It **remembers** the value between redraws, and its setter **tells React to redraw**.',
+          },
+        ],
       },
       {
         id: 'try',
         title: 'Try it',
+        icon: '🛠️',
+        hook: 'Build a counter and a mood switcher.',
         blocks: [
           {
             type: 'callout',
@@ -740,6 +981,8 @@ const [count, setCount] = useState(0)`,
       {
         id: 'conditional',
         title: 'Part 1: Conditional rendering',
+        icon: '🚦',
+        hook: 'Show different things depending on the situation.',
         blocks: [
           {
             type: 'p',
@@ -770,10 +1013,28 @@ return <p>Please log in.</p>`,
             text: '**The && trap.** If you write `{count && ...}` and `count` is 0, React prints a "0" on the screen. Always turn it into a clear true or false first, like `count > 0`.',
           },
         ],
+        cards: [
+          {
+            q: 'Name the three ways to show something only in some situations.',
+            a: '`if / else` before the return, the ternary `condition ? A : B`, and `condition && <Thing />`.',
+          },
+          {
+            q: 'How do you read this ternary out loud?',
+            qCode: 'inStock ? "in stock" : "sold out"',
+            a: '"If yes, in stock. Otherwise, sold out." The `?` means **if yes** and the `:` means **otherwise**.',
+          },
+          {
+            q: 'Why can this print a stray 0 on the screen?',
+            qCode: '{count && <strong>New messages</strong>}',
+            a: 'When `count` is 0, React prints the 0. Turn it into a clear true or false first, like `count > 0 &&`.',
+          },
+        ],
       },
       {
         id: 'lists',
         title: 'Part 2: Lists with .map()',
+        icon: '🍪',
+        hook: 'Cookie-cutter your data into list items.',
         blocks: [
           {
             type: 'p',
@@ -795,10 +1056,22 @@ return <p>Please log in.</p>`,
           { type: 'p', text: 'It keeps items that pass a test. You often filter first, then map.' },
           { type: 'code', lang: 'jsx', code: 'fruits.filter((f) => f.price < 40)' },
         ],
+        cards: [
+          {
+            q: 'What is the difference between `.map()` and `.filter()`?',
+            a: '`.map()` turns **every** item into something new, like JSX. `.filter()` keeps **only** the items that pass a test.',
+          },
+          {
+            q: 'In the cookie cutter picture, what are the dough, the cutter and the cookies?',
+            a: 'The array is the dough, `.map()` is the cutter, and each list item is a cookie.',
+          },
+        ],
       },
       {
         id: 'keys',
         title: 'Part 3: Keys',
+        icon: '🏷️',
+        hook: 'Name tags so React never mixes up items.',
         blocks: [
           {
             type: 'callout',
@@ -824,10 +1097,26 @@ return <p>Please log in.</p>`,
             ],
           },
         ],
+        cards: [
+          {
+            q: 'What makes a good key for a list item?',
+            a: 'A **stable unique id** from your data, like `fruit.id`.',
+          },
+          {
+            q: 'When does using the array index as a key cause bugs?',
+            a: 'When items are **added, removed or reordered**. React can mix up which item is which.',
+          },
+          {
+            q: 'Where does the key go?',
+            a: 'On the **outermost element** inside the map.',
+          },
+        ],
       },
       {
         id: 'arrays',
         title: 'Part 4: Changing arrays in state',
+        icon: '🆕',
+        hook: 'Always build a new array. Never push.',
         blocks: [
           {
             type: 'p',
@@ -848,10 +1137,31 @@ setTodos(todos.filter((t) => t.id !== id))`,
             text: 'The three dots are called **spread**. They mean "copy everything from this array here".',
           },
         ],
+        cards: [
+          {
+            q: 'Why should you not use `.push()` on an array in state?',
+            a: 'It changes the old array, so React may not notice. React redraws when it sees a **new** array.',
+          },
+          {
+            q: 'How do you add one todo and remove one todo in state?',
+            a: 'Build a new array each time.',
+            aCode: `// add
+setTodos([...todos, newTodo])
+
+// remove
+setTodos(todos.filter((t) => t.id !== id))`,
+          },
+          {
+            q: 'What do the three dots in `[...todos, newTodo]` mean?',
+            a: 'That is **spread**. It means "copy everything from this array here".',
+          },
+        ],
       },
       {
         id: 'demo',
         title: 'Explore the demo',
+        icon: '🧪',
+        hook: 'Seven examples to click, break and fix.',
         blocks: [
           {
             type: 'p',
@@ -863,6 +1173,7 @@ setTodos(todos.filter((t) => t.id !== id))`,
             caption: 'src/practice/lesson4/ListDemo.jsx',
             code: listDemoCode,
           },
+          { type: 'heading', text: 'Play with it' },
           { type: 'practice', file: 'src/practice/lesson4/ListDemo.jsx' },
           { type: 'p', text: 'Try these one at a time:' },
           {
@@ -879,10 +1190,18 @@ setTodos(todos.filter((t) => t.id !== id))`,
             ],
           },
         ],
+        cards: [
+          {
+            q: 'In Example 7, why do your notes end up next to the wrong animals on the left?',
+            a: 'The left list uses the **index** as its key. After adding to the top, React thinks seat 0 is still the same item, so the notes stay in their seats.',
+          },
+        ],
       },
       {
         id: 'try',
         title: 'Try it',
+        icon: '🛠️',
+        hook: 'Build a shopping list in your playground.',
         blocks: [
           {
             type: 'callout',
