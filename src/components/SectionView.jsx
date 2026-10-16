@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Block from './Block'
 import ReviewSession from './ReviewSession'
+import StudyTimer from './StudyTimer'
 import { splitIntoSteps } from '../lib/steps'
 import { isTypingTarget } from '../lib/keyboard'
 
@@ -62,6 +63,7 @@ function SectionView({ lesson, section, step, cards, isDone, deck, today, onGrad
         <span className="focus__count">
           {current + 1} / {total}
         </span>
+        <StudyTimer />
       </div>
 
       <header className="focus__head">
